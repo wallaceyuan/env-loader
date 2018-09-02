@@ -14,7 +14,8 @@ let json = {
     }
 }
 module.exports = function (resource) {
+    let callback = this.async();
     let options = loaderUtils.getOptions(this)
     validate(json,options,"env-loader");
-    return transform(resource,options.env)
+    transform(resource,options.env,callback)
 }

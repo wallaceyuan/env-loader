@@ -38,17 +38,25 @@ module.exports = {
         [
            {
                test: /\.js$/,
-               use: {
-                   loader: path.resolve(__dirname, 'src', 'loaders', 'env-loader'),
-                   options: {
-                       env: process.env.NODE_ENV
+               use: [
+                   {
+                       loader:'babel-loader',
+                       options: {
+                           presets: ['env','es2015'],
+                       }
+                   },
+                   {
+                       loader: 'env-loader',
+                       options: {
+                           env: process.env.NODE_ENV
+                       }
                    }
-               }
+               ]
            }
         ]
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // 热替换插件
-        new webpack.NamedModulesPlugin() // 执行热替换时打印模块名字
+        new webpack.NamedModulesPlugin(), // 执行热替换时打印模块名字
     ]
 }
