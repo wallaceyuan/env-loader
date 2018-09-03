@@ -60,6 +60,10 @@ async function transform(source) {
     if (entries.length) {
         const val = await fetchVendor(entries[0], env, source)
         callback(null, val.source)
+        /*this.resolve(this.context, val.saveUrl, function (err, res) {
+            console.log('err, reserr, reserr, res',err, res)
+            callback(null, val.source)
+        })*/
     } else {
         callback(null, source)
     }

@@ -7,7 +7,8 @@
     "webpack": "cross-env NODE_ENV=development webpack-dev-server --open --mode development",
     "test": "cross-env NODE_ENV=test webpack --mode development",
     "dev": "cross-env NODE_ENV=dev webpack --mode development",
-    "prd": "cross-env NODE_ENV=prd webpack --mode development"
+    "prd": "cross-env NODE_ENV=prd webpack --mode development",
+    "boot":"cross-env NODE_ENV=boot webpack --mode development"
   },
   "author": "",
   "license": "ISC",
@@ -27,7 +28,8 @@
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.7",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^2.0.4",
+    "babel-preset-react": "^6.24.1"
   },
   "dependencies": {
     "css-loader": "^1.0.0",

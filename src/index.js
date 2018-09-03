@@ -2,9 +2,12 @@
  * Created by yuan on 2018/8/31.
  */
 transform(
-    '//static1.${env}/common/jquery/2.2.4/jquery.min.js',
+    '/vendor/lodash.min.js'
 )
 
+var aa = _.chunk(['a', 'b', 'c', 'd'], 2);
+console.log(aa);
+// => [['a', 'b'], ['c', 'd']]
 
-//import 'https://static1.mmall.com/common/jquery/2.2.4/jquery.min.js';
-$('#app').html('HELLO')
+var bb = _.chunk(['a', 'b', 'c', 'd'], 3);
+console.log(bb);

@@ -3,20 +3,16 @@
  */
 var config = require('./config.js');
 var esprima = require('esprima')
-const Promise = require("bluebird");
 const path = require('path');
-var fs = Promise.promisifyAll(require("fs"));
-var request = Promise.promisify(require("request"));
 const loaderUtils = require('loader-utils')
 const validate = require('schema-utils');
-let downloadPath = path.resolve(__dirname,'vendor')
+let downloadPath = path.resolve(process.cwd(), 'src')
 
 function judgeType(node) {
     return (node.type === 'CallExpression')
         && (node.callee.name === 'transform')
         && (node.callee.type === 'Identifier')
 }
-
 
 let json = {
     "type": "object",
@@ -34,45 +30,49 @@ async function transform(source) {
     validate(json, options, "env-loader");
 
     let env = options.env.trim()
-    if(!env){
+    if (!env) {
         console.error("env-loader error: env required!")
         return;
     }
-    let flag=false;
+    let flag = false;
 
     const entries = [];
 
-    esprima.parseModule(source, {}, async(node, meta)=>{
+    esprima.parseModule(source, {}, async(node, meta)=> {
         /*console.log('node',node)
-        console.log('meta',meta)*/
-        if(judgeType(node)){
+         console.log('meta',meta)*/
+        if (judgeType(node)) {
             flag = true
-            entries.push({
-                val:node.arguments[0].value,
-                start: meta.start.offset,
-                end: meta.end.offset
-            });
+            node.arguments.map(argument=>{
+                entries.push({
+                    val: argument.value,
+                    start: meta.start.offset,
+                    end: meta.end.offset
+                });
+            })
+
         }
     })
-    if(entries.length){
-        callback(null,await fetchVendor(entries[0],env,source))
-    }else{
-        callback(null,source)
+
+    if (entries.length) {
+
+        callback(null, await fetchVendor(entries[0], env, source))
+    } else {
+        callback(null, source)
     }
 }
 
-async function fetchVendor(obj,env,source) {
-    const domain = config.environment[env].domain
-    const protocol = env == 'prd'?'https:':'http:'
-    let str = protocol + obj.val.replace(/\$\{env\}/,domain)
-    let extName = str.split('/').pop()
-    const response = await request(str)
-    const saveUrl = loaderUtils.urlToRequest(`/${extName}`,downloadPath); // "path/to/module.js"
-    await fs.writeFileAsync(saveUrl,response.body)
-    console.log(`${saveUrl}:ok`)
-    let transText = source.slice(obj.start,obj.end)
-    var replaceText = `import $ from "${saveUrl}"`
-    source = source.replace(transText,replaceText);
+async function fetchVendor(obj, env, source) {
+    let extName = obj.val
+    let transText = source.slice(obj.start, obj.end)
+    if(env == 'prd'|| env =='boot' ){
+        const saveUrl = loaderUtils.urlToRequest(`${extName}`,downloadPath); // "path/to/module.js"
+        console.log(`${saveUrl}:ok`)
+        var replaceText = `import "${saveUrl}"`
+    }else{
+        var replaceText = ''
+    }
+    source = source.replace(transText, replaceText);
     return source
 }
 

@@ -58,8 +58,7 @@ async function transform(source) {
     })
 
     if (entries.length) {
-        const val = await fetchVendor(entries[0], env, source)
-        callback(null, val.source)
+        callback(null, await fetchVendor(entries[0], env, source))
     } else {
         callback(null, source)
     }
@@ -70,14 +69,14 @@ async function fetchVendor(obj, env, source) {
     const protocol = env == 'prd'||'boot' ? 'https:' : 'http:'
     let str = protocol + obj.val.replace(/\$\{env\}/, domain)
     let extName = str.split('/').pop()
-    const response = await request(str)
-    const saveUrl = loaderUtils.urlToRequest(`/${extName}`,downloadPath); // "path/to/module.js"
+    //const response = await request(str)
+    /*const saveUrl = loaderUtils.urlToRequest(`/${extName}`,downloadPath); // "path/to/module.js"
     await fs.writeFileAsync(saveUrl, response.body)
-    console.log(`${saveUrl}:ok`)
+    console.log(`${saveUrl}:ok`)*/
     let transText = source.slice(obj.start, obj.end)
-    var replaceText = `import "${saveUrl}"`
+    var replaceText = `require("${str}") `
     source = source.replace(transText, replaceText);
-    return {source, saveUrl}
+    return source
 }
 
 
