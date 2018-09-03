@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "50184df7d9d2a6641f2a";
+/******/ 	var hotCurrentHash = "6184d73a92129d016bee";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -853,22 +853,23 @@ module.exports = function (module) {
 "use strict";
 
 
-var _jqueryMin = __webpack_require__(/*! ./loaders/vendor/jquery.min.js */ "./src/loaders/vendor/jquery.min.js");
+var _jqueryMin = __webpack_require__(/*! ./src/loaders/env-loader/lib/vendor/jquery.min.js */ "./src/loaders/env-loader/lib/vendor/jquery.min.js");
 
 var _jqueryMin2 = _interopRequireDefault(_jqueryMin);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//import 'https://static1.mmall.com/common/jquery/2.2.4/jquery.min.js';
 (0, _jqueryMin2.default)('#app').html('HELLO'); /**
                                                  * Created by yuan on 2018/8/31.
                                                  */
 
 /***/ }),
 
-/***/ "./src/loaders/vendor/jquery.min.js":
-/*!******************************************!*\
-  !*** ./src/loaders/vendor/jquery.min.js ***!
-  \******************************************/
+/***/ "./src/loaders/env-loader/lib/vendor/jquery.min.js":
+/*!*********************************************************!*\
+  !*** ./src/loaders/env-loader/lib/vendor/jquery.min.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3094,7 +3095,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     return a.$ === n && (a.$ = Ob), b && a.jQuery === n && (a.jQuery = Nb), n;
   }, b || (a.jQuery = a.$ = n), n;
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ })
 

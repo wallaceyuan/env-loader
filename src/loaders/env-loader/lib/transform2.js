@@ -7,7 +7,7 @@ const Promise = require("bluebird");
 const path = require('path');
 var fs = Promise.promisifyAll(require("fs"));
 var request = Promise.promisify(require("request"));
-let downloadPath = path.resolve(__dirname,'vendor')
+let downloadPath = path.resolve(__dirname,'../../vendor')
 
 function judgeType(node) {
     return (node.type === 'CallExpression')
@@ -27,7 +27,7 @@ async function transform(source,env,callback) {
 
     esprima.parseModule(source, {}, async(node, meta)=>{
         /*console.log('node',node)
-        console.log('meta',meta)*/
+         console.log('meta',meta)*/
         if(judgeType(node)){
             flag = true
             entries.push({
@@ -54,7 +54,7 @@ async function fetchVendor(obj,env,source) {
         const async2 = await fs.writeFileAsync(`${downloadPath}/${extName}`,response.body).then(function(data) {
             console.log(`${downloadPath}/${extName}:ok`)
             let transText = source.slice(obj.start,obj.end)
-            var replaceText = `import $ from "./loaders/vendor/${extName}"`
+            var replaceText = `import $ from "../vendor/${extName}"`
             source = source.replace(transText,replaceText);
             return source
         });

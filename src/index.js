@@ -5,4 +5,6 @@ transform(
     '//static1.${env}/common/jquery/2.2.4/jquery.min.js',
 )
 
+
+//import 'https://static1.mmall.com/common/jquery/2.2.4/jquery.min.js';
 $('#app').html('HELLO')
