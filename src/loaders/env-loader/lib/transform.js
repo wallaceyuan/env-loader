@@ -1,7 +1,6 @@
 /**
  * Created by yuan on 2018/8/31.
  */
-var config = require('./config.js');
 var esprima = require('esprima')
 const path = require('path');
 const loaderUtils = require('loader-utils')
@@ -10,7 +9,7 @@ let downloadPath = path.resolve(process.cwd(), 'src')
 
 function judgeType(node) {
     return (node.type === 'CallExpression')
-        && (node.callee.name === 'transform')
+        && (node.callee.name === 'envLoader')
         && (node.callee.type === 'Identifier')
 }
 
@@ -38,7 +37,7 @@ async function transform(source) {
 
     const entries = [];
 
-    esprima.parseModule(source, {}, async(node, meta)=> {
+    esprima.parseModule(source, {}, (node, meta)=> {
         /*console.log('node',node)
          console.log('meta',meta)*/
         if (judgeType(node)) {
@@ -55,22 +54,21 @@ async function transform(source) {
     })
 
     if (entries.length) {
-
-        callback(null, await fetchVendor(entries[0], env, source))
+        callback(null, fetchVendor(entries[0], env, source))
     } else {
         callback(null, source)
     }
 }
 
-async function fetchVendor(obj, env, source) {
+function fetchVendor(obj, env, source) {
     let extName = obj.val
     let transText = source.slice(obj.start, obj.end)
-    if(env == 'prd'|| env =='boot' ){
+    if(env == 'prd'){
         const saveUrl = loaderUtils.urlToRequest(`${extName}`,downloadPath); // "path/to/module.js"
-        console.log(`${saveUrl}:ok`)
+        //console.log(`${saveUrl}:ok`)
         var replaceText = `import "${saveUrl}"`
     }else{
-        var replaceText = ''
+        var replaceText = 'function envLoad(){}'
     }
     source = source.replace(transText, replaceText);
     return source

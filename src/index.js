@@ -1,7 +1,5 @@
-/**
- * Created by yuan on 2018/8/31.
- */
-transform(
+
+envLoader(
     '/vendor/lodash.min.js'
 )
 
